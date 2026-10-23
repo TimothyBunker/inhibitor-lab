@@ -1,3 +1,11 @@
+# This fork
+
+This fork of [appliedAIstudio/inhibitor-lab](https://github.com/appliedaistudio/inhibitor-lab) includes **Veritas**, the Good Soup team's Philadelphia Codefest 2026 research and study companion. Timothy Bunker is one of the team members.
+
+See [the Veritas project README](codefest/team-workspaces/Good%20Soup/README.md) for its implementation, setup, and limits. The upstream Inhibitor documentation follows below.
+
+---
+
 [
 ![Inhibitor hero banner](docs/assets/images/inhibitor-hero.jpg)
 ](docs/inhibitor-application-sprint.md)
