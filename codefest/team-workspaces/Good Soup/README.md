@@ -24,12 +24,12 @@ This team's submission is provided under the MIT License.
 
 SPDX-License-Identifier: MIT
 
-# Veritas — Verified Student Research & Learning Companion
+# Veritas — Research and Study Companion
 
 
 > **Philadelphia Codefest 2026 · Inhibitor Innovation Track**
 
-Students increasingly use AI for research and learning, but current systems can be confidently wrong, sycophantic, unsafe with actions, and weak on privacy. Veritas is a verified research and learning companion that uses the Inhibitor as its first gate, then routes every request through specialist verifier agents, before producing a final answer the student can actually trust.
+Veritas is a hackathon research and study companion built by the Good Soup team. It combines an Inhibitor gate, evidence retrieval, specialist review agents, and a final answer with citations. These checks can still miss errors; the system does not guarantee correct or safe answers.
 
 ---
 
@@ -61,15 +61,16 @@ Student input
 
 ---
 
-## Why This Matters for Philadelphia
+## Scope
 
-Philadelphia has one of the highest concentrations of university students on the East Coast. As AI writing and research tools become default study infrastructure, the failure modes — confident hallucinations, sycophantic agreement with weak ideas, unsafe research actions — land directly on students making real academic and career decisions. Veritas puts a verifiable safety and honesty layer between the student and the model, and makes every intervention visible so students learn from it.
-
----
+The project explores literature summaries, reasoning checks, and spaced-repetition study. Retrieval is limited to the local corpus and implemented APIs. Authentication and deployment work remain prototype-level.
 
 ## Benchmark Results
 
-Current public campaign:
+Recorded campaign summary:
+
+These are project-reported results for the listed tasks and configurations. Different benchmark metrics are not interchangeable; their mean is not a general quality, safety, or correctness score. Inspect per-task conditions and outputs before drawing broader conclusions.
+
 - `11` benchmarks
 - `198 / 198` runs scored
 - `0` execution errors
@@ -98,25 +99,24 @@ Current public campaign:
 
 | Benchmark | Baseline | No Harness | Full Harness | Result |
 |---|---:|---:|---:|---|
-| `BEIR` | `0.729485` | `0.998604` | `0.998604` | major retrieval lift |
-| `HaluEval` | `0.494800` | `0.844600` | `0.828451` | big hallucination reduction |
-| `SciFact` | `0.357667` | `0.566392` | `0.564975` | much stronger scientific grounding |
-| `MathDial` | `0.497123` | `0.498318` | `0.615591` | better tutoring correction |
-| `TruthfulQA` | `0.534882` | `0.532715` | `0.552003` | modest truthfulness gain |
-| `TutorBench` | `0.566473` | `0.563871` | `0.574168` | small tutoring gain |
-| `AgentDojo` | `0.966220` | `0.963427` | `0.927686` | regression to tune next |
-| `HarmBench` | `1.000000` | `1.000000` | `0.997685` | effectively saturated |
-| `StrongREJECT` | `0.997596` | `0.997596` | `0.996855` | effectively saturated |
-| `custom_anti_sycophancy` | `0.000000` | `0.000000` | `1.000000` | verifier wins clearly |
-| `custom_recall_understanding` | `0.000000` | `0.000000` | `1.000000` | retention harness wins clearly |
+| `BEIR` | `0.729485` | `0.998604` | `0.998604` | higher recorded score |
+| `HaluEval` | `0.494800` | `0.844600` | `0.828451` | higher recorded score |
+| `SciFact` | `0.357667` | `0.566392` | `0.564975` | higher recorded score |
+| `MathDial` | `0.497123` | `0.498318` | `0.615591` | higher recorded score |
+| `TruthfulQA` | `0.534882` | `0.532715` | `0.552003` | higher recorded score |
+| `TutorBench` | `0.566473` | `0.563871` | `0.574168` | higher recorded score |
+| `AgentDojo` | `0.966220` | `0.963427` | `0.927686` | lower recorded score |
+| `HarmBench` | `1.000000` | `1.000000` | `0.997685` | near ceiling in this run |
+| `StrongREJECT` | `0.997596` | `0.997596` | `0.996855` | near ceiling in this run |
+| `custom_anti_sycophancy` | `0.000000` | `0.000000` | `1.000000` | higher recorded score |
+| `custom_recall_understanding` | `0.000000` | `0.000000` | `1.000000` | higher recorded score |
 
-### What This Shows
+### Interpretation and Limits
 
-- The full verifier/orchestration harness lifts the mean score from `0.558568` to `0.823274`, a `+0.264706` absolute gain and `+47.39%` relative lift over baseline.
-- The plain model interface without our harness helps somewhat, but it only reaches `0.633229`, so most of the improvement comes from the actual verification pipeline rather than just changing the wrapper.
-- The strongest gains are in hallucination control, retrieval quality, grounding, anti-sycophancy, and recall checking.
-- The main remaining regression is `AgentDojo`, where the current harness is too conservative in some agentic situations.
-- `XSTest` and `PII-Bench` are wired in the harness and cache pipeline, but still require upstream Hugging Face access approval before we can include them in the published scorecard.
+- The recorded values vary by benchmark. Some increase and some decrease with the full harness; the scorecard is an exploratory comparison.
+- The three variants differ in orchestration and model usage. The aggregate alone does not isolate which component caused an effect.
+- `AgentDojo`, `HarmBench`, and `StrongREJECT` have lower full-harness scores in this campaign.
+- `XSTest` and `PII-Bench` were not included because access approval was still required.
 
 Run the harness yourself:
 
@@ -167,7 +167,7 @@ VERIFIER_MODEL=gpt-4.1-nano
 DB_USER=postgres
 DB_HOST=localhost
 DB_DATABASE=goodsoup
-DB_PASSWORD=pass123
+DB_PASSWORD=replace-with-a-local-password
 DB_PORT=5432
 
 GOOGLE_CLIENT_ID=...
